@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Troop Nation | The Zebra Troop Fan Community</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --midnight: #0a0a0f;
+      --deep: #111118;
+      --panel: #16161f;
+      --gold: #e8b84b;
+      --gold-dim: #b8902e;
+      --gold-glow: rgba(232, 184, 75, 0.15);
+      --cream: #f5edd8;
+      --muted: #8a8a9a;
+      --accent-coral: #e06b4a;
+      --accent-violet: #7b4fcf;
+      --text: #e8e4dc;
+      --border: rgba(232,184,75,0.18);
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--midnight);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== FIXED GRAIN OVERLAY (NO MORE BLACK SCREEN) ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 1; /* FIXED */
+    }
+
+    /* All content sits ABOVE the grain */
+    nav, header, section, footer, .community-banner {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+      padding: 18px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(10,10,15,0.97), transparent);
+      backdrop-filter: blur(4px);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: 120px 24px 80px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(123,79,207,0.22) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(232,184,75,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(224,107,74,0.10) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-rings {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      animation: expand 8s linear infinite;
+      opacity: 0;
+    }
+
+    .ring:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
+    .ring:nth-child(2) { width: 500px; height: 500px; animation-delay: 2s; }
+    .ring:nth-child(3) { width: 700px; height: 700px; animation-delay: 4s; }
+    .ring:nth-child(4) { width: 900px; height: 900px; animation-delay: 6s; }
+
+    @keyframes expand {
+      0%   { opacity: 0; transform: scale(0.6); }
+      20%  { opacity: 0.6; }
+      100% { opacity: 0; transform: scale(1.1); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.28em;
+      font-size: 0.9rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(3.8rem, 10vw, 8rem);
+      line-height: 0.95;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--muted);
+      margin-bottom: 48px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--midnight);
+      padding: 14px 36px;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--gold-dim); transform: translateY(-2px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--cream);
+      padding: 14px 36px;
+      border: 1px solid var(--border);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.25s, color 0.25s, transform 0.2s;
+    }
+
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: linePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes linePulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ===== SECTION BASE ===== */
+    section { padding: 100px 48px; max-width: 1180px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .section-body {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 640px;
+      line-height: 1.85;
+    }
+
+    /* ===== MOBILE OPTIMIZATION (FULL REWRITE) ===== */
+    @media (max-width: 768px) {
+
+      body {
+        font-size: 0.95rem;
+        line-height: 1.65;
+      }
+
+      section {
+        padding: 48px 20px;
+      }
+
+      nav {
+        padding: 12px 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 100px 20px 60px;
+      }
+
+      .hero-title {
+        font-size: clamp(2.8rem, 12vw, 5rem);
+        line-height: 1;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+        margin-bottom: 32px;
+      }
+
+      .hero-eyebrow {
+        font-size: 0.75rem;
+        letter-spacing: 0.22em;
+      }
+
+      .hero-cta {
+        gap: 12px;
+      }
+
+      .btn-primary,
+      .btn-outline {
+        padding: 12px 28px;
+        font-size: 0.78rem;
+      }
+
+      .scroll-hint {
+        bottom: 24px;
+        font-size: 0.6rem;
+      }
+
+      .ring {
+        opacity: 0.25;
+        transform: scale(0.8);
+      }
+
+      #about {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .stat-row {
+        flex-direction: column;
+        gap: 24px;
+        margin-top: 32px;
+      }
+
+      .album-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin-top: 40px;
+      }
+
+      .album-card {
+        padding: 28px 20px;
+      }
+
+      .community-banner {
+        padding: 60px 24px;
+      }
+
+      .community-banner h2 {
+        font-size: clamp(1.8rem, 6vw, 2.6rem);
+      }
+
+      .social-links {
+        gap: 12px;
+      }
+
+      .social-pill {
+        padding: 10px 18px;
+        font-size: 0.75rem;
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .news-featured .news-img {
+        height: 200px;
+      }
+
+      .news-mini {
+        padding: 16px;
+      }
+
+      .marquee-item {
+        padding: 0 20px;
+        font-size: 0.9rem;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding-bottom: 32px;
+      }
+
+      .footer-col h4 {
+        margin-bottom: 8px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+
+      .footer-disclaimer {
+        max-width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">TROOP NATION</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#music">Music</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#community">Community</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    <p class="hero-eyebrow">Welcome to the Official Fan Community</p>
+    <h1 class="hero-title">Troop<br><em>Nation</em></h1>
+    <p class="hero-subtitle">Home of the Zebra Troop faithful</p>
+    <div class="hero-cta">
+      <a href="#music" class="btn-primary">Explore the Music</a>
+      <a href="#community" class="btn-outline">Join the Community</a>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Zebra Troop <span>&#9670;</span></span>
+      <span class="marquee-item">Brandon Shephard <span>&#9670;</span></span>
+      <span class="marquee-item">Sleepless <span>&#9670;</span></span>
+      <span class="marquee-item">Indie Soul <span>&#9670;</span></span>
+      <span class="marquee-item">Psychedelic R&amp;B <span>&#9670;</span></span>
+      <span class="marquee-item">Troop Nation <span>&#9670;</span></span>
+      <span class="marquee-item">troopnationherd.com <span>&#9670;</span></span>
+
+      <!-- Loop again for seamless marquee -->
+      <span class="marquee-item">Zebra Troop <span>&#9670;</span></span>
+      <span class="marquee-item">Brandon Shephard <span>&#9670;</span></span>
+      <span class="marquee-item">Sleepless <span>&#9670;</span></span>
+      <span class="marquee-item">Indie Soul <span>&#9670;</span></span>
+      <span class="marquee-item">Psychedelic R&amp;B <span>&#9670;</span></span>
+      <span class="marquee-item">Troop Nation <span>&#9670;</span></span>
+      <span class="marquee-item">troopnationherd.com <span>&#9670;</span></span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-visual">
+      <div class="about-frame">
+        <div class="about-frame-inner">ZT</div>
+        <div class="about-corner tl"></div>
+        <div class="about-corner tr"></div>
+        <div class="about-corner bl"></div>
+        <div class="about-corner br"></div>
+      </div>
+      <div class="about-tag">Est. Fan Community</div>
+    </div>
+
+    <div class="about-content">
+      <p class="section-label">About the Artist</p>
+      <h2 class="section-heading">The Sound of Brandon Shephard</h2>
+
+      <p class="section-body">
+        Zebra Troop is the indie psychedelic soul project of Brandon Shephard, a singular artist blending the warmth of classic R&amp;B, the groove of 70s soul, and modern indie sensibilities into something entirely his own.
+      </p>
+
+      <p class="section-body" style="margin-top: 16px;">
+        Troop Nation is the fan-run community dedicated to celebrating his music, sharing his art with the world, and connecting listeners who feel that same pull to his sound. This is home for the Herd.
+      </p>
+
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-number">2026</div>
+          <div class="stat-label">Sleepless Release</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">&#9834;</div>
+          <div class="stat-label">Psychedelic Soul</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">&#8734;</div>
+          <div class="stat-label">Herd Growing</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- MUSIC -->
+  <section id="music">
+    <p class="section-label">Discography</p>
+    <h2 class="section-heading">The Music</h2>
+
+    <div class="album-grid">
+
+      <div class="album-card">
+        <div class="album-art">&#127926;</div>
+        <p class="album-year">2026</p>
+        <h3 class="album-title">Sleepless</h3>
+        <p class="album-desc">
+          The latest album. Lush, layered, and deeply personal. A late-night record for wide-awake souls.
+        </p>
+        <a href="https://open.spotify.com/artist/zebra-troop" class="album-link" target="_blank">
+          Stream on Spotify →
+        </a>
+      </div>
+
+      <div class="album-card">
+        <div class="album-art album-art-2">&#127928;</div>
+        <p class="album-year">Earlier Work</p>
+        <h3 class="album-title">Previous Releases</h3>
+        <p class="album-desc">
+          Every release from Zebra Troop carries that unmistakable warmth. Explore the catalog and find your entry point.
+        </p>
+        <a href="https://open.spotify.com/artist/zebra-troop" class="album-link" target="_blank">
+          Full Discography →
+        </a>
+      </div>
+
+      <div class="album-card">
+        <div class="album-art album-art-3">&#127925;</div>
+        <p class="album-year">Fan Picks</p>
+        <h3 class="album-title">Herd Favorites</h3>
+        <p class="album-desc">
+          The tracks that stopped the Troop Nation community cold. Community-curated deep cuts and standout moments.
+        </p>
+        <a href="#community" class="album-link">Join the Conversation →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <div class="community-banner" id="community">
+    <h2>Join <em>The Herd</em></h2>
+    <p>
+      Follow Troop Nation across every platform. Share the music. Grow the community. The Herd is everywhere.
+    </p>
+
+    <div class="social-links">
+      <a href="https://www.tiktok.com/@troop_nation" class="social-pill" target="_blank">▶ TikTok</a>
+      <a href="https://www.instagram.com" class="social-pill" target="_blank">▶ Instagram</a>
+      <a href="https://www.youtube.com/@zebratroopfan6695" class="social-pill" target="_blank">▶ YouTube</a>
+      <a href="https://www.facebook.com" class="social-pill" target="_blank">▶ Facebook</a>
+      <a href="https://bsky.app" class="social-pill" target="_blank">▶ Bluesky</a>
+      <a href="https://threads.net" class="social-pill" target="_blank">▶ Threads</a>
+    </div>
+  </div>
+
+  <!-- NEWS -->
+  <section id="news" style="max-width: 1180px; margin: 0 auto; padding: 100px 48px;">
+    <p class="section-label">Latest</p>
+    <h2 class="section-heading">News &amp; Updates</h2>
+
+    <div class="news-grid">
+
+      <div class="news-featured">
+        <div class="news-img">&#127926;</div>
+        <div class="news-body">
+          <p class="news-tag">Album Release</p>
+          <h3 class="news-title">Sleepless Is Here: Track by Track</h3>
+          <p class="news-excerpt">
+            The March 30th release of Sleepless marked a milestone moment for Zebra Troop. Troop Nation went track by track through every song to celebrate the album with the Herd.
+          </p>
+          <p class="news-date">March 2026</p>
+        </div>
+      </div>
+
+      <div class="news-stack">
+
+        <div class="news-mini">
+          <p class="news-tag">Playlists</p>
+          <h3 class="news-title">BIRP Playlist Placement Drives New Listeners</h3>
+          <p class="news-date">May 2026</p>
+        </div>
+
+        <div class="news-mini">
+          <p class="news-tag">Community</p>
+          <h3 class="news-title">Troop Nation TikTok Keeps Growing the Herd</h3>
+          <p class="news-date">April 2026</p>
+        </div>
+
+        <div class="news-mini">
+          <p class="news-tag">Countdown</p>
+          <h3 class="news-title">21-Day Sleepless Countdown Recap</h3>
+          <p class="news-date">March 2026</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+<!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+
+      <div>
+        <div class="footer-brand-name">TROOP NATION</div>
+        <p class="footer-tagline">
+          A fan-run community dedicated to Zebra Troop and the music of Brandon Shephard.
+          Not officially affiliated with the artist.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#music">Music</a></li>
+          <li><a href="#news">News</a></li>
+          <li><a href="#community">Community</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Find Us</h4>
+        <ul>
+          <li><a href="https://www.tiktok.com/@troop_nation" target="_blank">TikTok</a></li>
+          <li><a href="https://www.youtube.com/@zebratroopfan6695" target="_blank">YouTube</a></li>
+          <li><a href="https://troopnationherd.com" target="_blank">troopnationherd.com</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 Troop Nation Fan Community</span>
+      <span class="footer-disclaimer">
+        Fan site. Not affiliated with Zebra Troop or Brandon Shephard.
+        All music rights belong to the respective artists and labels.
+      </span>
+    </div>
+  </footer>
+
+</body>
+</html>
